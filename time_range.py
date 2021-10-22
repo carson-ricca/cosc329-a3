@@ -13,6 +13,11 @@ OUTPUT = BASE_PATH + "/output/"
 
 
 def determine_time_range():
+    """
+    Determine the percentages for each section of the time range for both difficulties. It then exports these values
+    into a csv in the output directory.
+    :return:
+    """
     df = pd.read_csv(AVERAGES)
     easy_range = determine_percentages(df.iloc[0]['easy_time'], EASY_PATH)
     hard_range = determine_percentages(df.iloc[0]['hard_time'], HARD_PATH)
@@ -29,6 +34,13 @@ def determine_time_range():
 
 
 def determine_percentages(avg_time, file_path):
+    """
+    Determines what the range is for the average time, then determines what percentage falls in each part of the
+    range (slow, avg, fast).
+    :param avg_time: the average time for the difficulty.
+    :param file_path: the file path to the raw data for the difficulty.
+    :return: a dictionary with the percentages for each part of the time range.
+    """
     with open(file_path) as f:
         lines = f.readlines()
         time_taken = get_time_taken(lines)

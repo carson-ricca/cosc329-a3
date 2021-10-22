@@ -10,6 +10,11 @@ OUTPUT = BASE_PATH + "/output/"
 
 
 def process_file(file_path):
+    """
+    Process the file and returns the average accuracy and time taken for the specific difficulty.
+    :param file_path: the path to the file.
+    :return: a dictionary.
+    """
     with open(file_path) as f:
         lines = f.readlines()
         time_taken = get_time_taken(lines)
@@ -20,6 +25,11 @@ def process_file(file_path):
 
 
 def get_time_taken(contents):
+    """
+    Creates a list of the time taken to complete the task where the time is converted from ns to s.
+    :param contents: the lines in the file.
+    :return: a list of times in seconds.
+    """
     time_taken = []
     for line in contents:
         time = line.partition('Question (ns): ')[2]
@@ -31,6 +41,11 @@ def get_time_taken(contents):
 
 
 def get_average_accuracy(contents):
+    """
+    Gets the average accuracy from the file.
+    :param contents: the lines in the file.
+    :return: a list with the average accuracies.
+    """
     accuracy = []
     for line in contents:
         correct = line.partition('Number Questions Correctly Answered: ')[2]
@@ -40,6 +55,11 @@ def get_average_accuracy(contents):
 
 
 def process_data():
+    """
+    Makes an output directory if it doesn't already exist, overwrites existing directory if it does exist. Gets the
+    average time and accuracy for each difficulty and exports all these values to a csv in the output directory.
+    :return:
+    """
     if Path(OUTPUT).exists() and Path(OUTPUT).is_dir():
         shutil.rmtree(Path(OUTPUT))
     Path(OUTPUT).mkdir(parents=True, exist_ok=True)
