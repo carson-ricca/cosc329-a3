@@ -18,16 +18,38 @@ bnet = mk_bnet(dag, node_sizes);
 bnet.CPD{D} = tabular_CPD(bnet, D, 'CPT', [0.5 0.5]);
 
 % Define accuracy CPT.
-bnet.CPD{A} = tabular_CPD(bnet, A, 'CPT', [0.96 0.04 0.9 0.1]);
+CPT = zeros(2, 2);
+CPT(2,2) = 0.96;
+CPT(2,1) = 0.04;
+CPT(1,2) = 0.9;
+CPT(1,1) = 0.1;
+bnet.CPD{A} = tabular_CPD(bnet, A, 'CPT', CPT);
 
 % Define time CPT.
-bnet.CPD{T} = tabular_CPD(bnet, T, 'CPT', [0.15 0.73 0.12 0.23 0.5 0.27]);
+CPT = zeros(2, 2, 2, 2);
+CPT(2, 2, 1, 1) = 0.15;
+CPT(2, 1, 2, 1) = 0.73;
+CPT(2, 1, 1, 2) = 0.12;
+CPT(1, 2, 1, 1) = 0.23;
+CPT(1, 1, 2, 1) = 0.5;
+CPT(1, 1, 1, 2) = 0.27;
+bnet.CPD{T} = tabular_CPD(bnet, T, 'CPT', CPT);
 
 % Define need help CPT.
-bnet.CPD{NH} = tabular_CPD(bnet, NH, 'CPT', [0.2 0.8 0.6 0.4]);
+CPT = zeros(2, 2);
+CPT(2,2) = 0.2;
+CPT(2,1) = 0.8;
+CPT(1,2) = 0.6;
+CPT(1,1) = 0.4;
+bnet.CPD{NH} = tabular_CPD(bnet, NH, 'CPT', CPT);
 
 % Define confused CPT.
-bnet.CPD{C} = tabular_CPD(bnet, C, 'CPT', [0.7 0.3 0.2 0.8]);
+CPT = zeros(2, 2);
+CPT(2,2) = 0.7;
+CPT(2,1) = 0.3;
+CPT(1,2) = 0.2;
+CPT(1,1) = 0.8;
+bnet.CPD{C} = tabular_CPD(bnet, C, 'CPT', CPT);
 
 % Create inference engine.
 engine = jtree_inf_engine(bnet);
@@ -41,5 +63,17 @@ ev{A} = 2;
 ev{T} = 1;
 engine = enter_evidence(engine, ev);
 
-m = marginal_nodes(engine, NH);
-fprintf('%5.3f', m.T(2));
+marg = marginal_nodes(engine, NH);
+fprintf('Marginal probability: %5.3f', marg.T(2));
+
+% Determine second probability.
+ev = cell(1, 5);
+
+ev{C} = 1;
+ev{A} = 2;
+ev{T} = 1;
+engine = enter_evidence(engine, ev);
+
+marg = marginal_nodes(engine, NH);
+fprintf('Marginal probability: %5.3f', marg.T(2));
+

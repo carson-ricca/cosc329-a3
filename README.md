@@ -18,3 +18,8 @@ To run the project follow the steps below:
 > 3. In matlab run the `install_bnt.m` script.
 > 4. From the project's root directory run `python main.py`, this will process the raw data, and create the CSVs in `data/output` if they don't already exist.
 > 5. In matlab run the `a3.m` script to generate the Bayesian Network and perform inference.
+
+## Difficulties
+
+I ran into an issue when trying to display the marginal probability, I believe the code throughout my assignment is
+correct, but I have been unable to determine why the marginal probability is not being displayed after running the file.
